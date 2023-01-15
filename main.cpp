@@ -365,7 +365,8 @@ class Player {
 					Exp = 0;
 					Pause();
 				}
-					
+				
+				inventoring = false;
 
 				display(M);
 				refresh();
