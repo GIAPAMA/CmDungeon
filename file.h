@@ -99,13 +99,50 @@ class Spell{
 	public:
 		
 		struct spell{
-			string name;
-			int dmg;
-			int mana;
-			int cost;
+			string name = "";
+			int dmg = 0;
+			int mana = 0;
+			int cost = 0;
 		};
 		
+		string name = "";
+		int dmg = 0;
+		int mana = 0;
+		int cost = 0;
+
 		spell spells[5];
+
+		void displayThis(int x, int y, int index) {
+			setCursorPosition(x, y);
+			cout<<(char)218;
+
+			for(int i=0; i<17; i++)
+				cout<<(char)196;
+			cout<<(char)191;
+
+			for(int i=0; i<10; i++) {
+				setCursorPosition(x, y+i+1);
+				cout<<(char)179;
+				setCursorPosition(x+18, y+i+1);
+				cout<<(char)179;
+			}
+
+			setCursorPosition(x, y+11);
+			cout<<(char)192;
+
+			for(int i=0; i<17; i++)
+				cout<<(char)196;
+			cout<<(char)217;
+
+			setCursorPosition(x+3, y+2);
+			cout<<index+1<<". "<<name;
+
+			setCursorPosition(x+3, y+7);
+			cout<<"Damage: "<<dmg;
+
+			setCursorPosition(x+3, y+9);
+			cout<<"Mana Cost: "<<-mana;
+		}
 
 		void displaySpell(int x, int y, int id, int index) {
 			setCursorPosition(x, y);
@@ -141,20 +178,38 @@ class Spell{
 
 		void SpellNameSearch(string code, int num)
 		{
-			string name;
-			char dmg[10];
+			string b;
+			char a[10];
 			ifstream Spell("Data/Spell/Spell.txt");
-			while(getline(Spell, name))
+			if(num == 6) {
+				while(getline(Spell, b))
+				{
+					if(b==code)
+					{
+						getline(Spell, name);
+						Spell.getline(a, 10);
+						dmg = atoi(a);
+						Spell.getline(a, 10);
+						mana = atoi(a);
+						Spell.getline(a, 10);
+						cost = atoi(a);
+						return;
+					}
+				}
+				return;
+			}
+
+			while(getline(Spell, b))
 			{
-				if(name==code)
+				if(b==code)
 				{
 					getline(Spell, spells[num].name);
-					Spell.getline(dmg, 10);
-					spells[num].dmg = atoi(dmg);
-					Spell.getline(dmg, 10);
-					spells[num].mana = atoi(dmg);
-					Spell.getline(dmg, 10);
-					spells[num].cost = atoi(dmg);
+					Spell.getline(a, 10);
+					spells[num].dmg = atoi(a);
+					Spell.getline(a, 10);
+					spells[num].mana = atoi(a);
+					Spell.getline(a, 10);
+					spells[num].cost = atoi(a);
 					return;
 				}
 			}
@@ -163,7 +218,7 @@ class Spell{
 		
 		int Use(int armor, int nspell)
 		{
-			return (spells[nspell].dmg/10)*(10-(armor/10));
+			return spells[nspell].dmg*100/(100+armor);
 		}
 };
 
@@ -293,8 +348,4 @@ class Enemy{
 
 			return true;
 		}
-		
-		
-		
-			
 };
